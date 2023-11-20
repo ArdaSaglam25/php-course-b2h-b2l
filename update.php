@@ -1,5 +1,7 @@
 <?php
+session_start();
 include "18_database-connection.php";
+
 global $db;
 
 
@@ -10,36 +12,23 @@ if ($id !== null && $id !== false) {
     $query->bindParam('id', $id);
     $query->execute();
     $bike = $query->fetch(PDO::FETCH_ASSOC);
+    $categoryId = $bike['categorie_id'];
 }else{
     die();
 }
 
-if (isset($_POST['submit'])) {
-    if (!empty($_POST['brand']) && !empty($_POST['type']) && !empty($_POST['price'])) {
-        $price = filter_input(INPUT_POST, 'price', FILTER_VALIDATE_FLOAT);
-        if (!$price) {
-            $alert = "Vul een geldig getal in";
-        } else {
-            $updateQuery = $db->prepare('UPDATE fietsen SET merk = :brand, 
-                   type = :type, prijs = :price WHERE id = :id');
-            $updateQuery->bindParam('brand', $_POST['brand']);
-            $updateQuery->bindParam('type', $_POST['type']);
-            $updateQuery->bindParam('price', $price);
-            $updateQuery->bindParam('id', $id);
-            if ($updateQuery->execute()){
-                header('location: detail.php?id=' . $bike['categorie_id']);
-            }else{
-                $alert= "er is iets mis gegaan";
-            }
-        }
-    } else {
-        $alert = "Vul alles in";
-    }
-} else {
-    $alert = "";
+$deleteQuery =$db->prepare('DELETE FROM fietsen WHERE id = :id');
+$deleteQuery->bindParam('id',$id);
+if {$deleteQuery
 }
 
+
 ?>
+
+
+
+
+
 <!doctype html>
 <html lang="en">
 <head>
